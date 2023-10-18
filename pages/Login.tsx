@@ -17,7 +17,7 @@ export default function Login() {
     if ( username === '' || password === '' ) {
       Toast.show({
           type: 'info',
-          text1: 'Inputs Empty!',
+          text1: 'Inputs Empty!-',
         })
     }else {
       
@@ -25,7 +25,7 @@ export default function Login() {
         const dt = res.data
         userSetData(dt).then( () => {
           // Store User Data Succcess
-          console.log("Store Success")
+          navigation.replace('AppTabs')
         })
       }).catch(err => {
         console.log('err')

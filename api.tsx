@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { ProductModel, SingleProduct } from './models/ProductModel'
 import { UserModel } from './models/UserModel'
 
 const baseUrl = 'https://dummyjson.com/'
@@ -17,6 +18,16 @@ export const login = (username: string, password: string) => {
     password: password
   }
   return config.post<UserModel>('auth/login', sendObj)
+}
+
+// Product Service
+export const allProduct = () => {
+  return config.get<ProductModel>('products')
+}
+
+// Single product
+export const singleProduct = (id: number) => {
+  return config.get<SingleProduct>('products/'+id)
 }
 
 
