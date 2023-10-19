@@ -4,9 +4,15 @@ import { Text, SafeAreaView, StyleSheet, View, ScrollView, Platform, StatusBar, 
 import { useNavigation } from '@react-navigation/native';
 import { login } from '../api'
 import Toast from 'react-native-toast-message';
-import { userGetData, userSetData } from '../utils/storage';
+import { productGetData, userGetData, userSetData } from '../utils/storage';
+import {useDispatch} from 'react-redux'
+import { ILikeAction } from '../useRedux/LikesReducer';
+import { LikesEnum } from '../useRedux/LikesEnum';
 
 export default function Login() {
+
+    // set Data
+  const dispatch = useDispatch()
 
   const [username, setUserName ] = useState('kminchelle')
   const [password, setPassword ] = useState('0lelplR')
@@ -39,7 +45,17 @@ export default function Login() {
   }
 
   useEffect(() => {
-    console.log("useEffect call-")
+    productGetData().then(res => {
+      if (res) {
+        res.forEach((item, index) => {
+          const sendObj: ILikeAction = {
+            type: LikesEnum.LIKE_ADD,
+            payload: item
+          }
+          dispatch(sendObj)
+        })
+      }
+    })
   }, [])
 
   useEffect(() => {
@@ -75,6 +91,12 @@ export default function Login() {
         <View style={{marginTop: 30, }}>
           <TouchableOpacity onPress={ () => navigation.navigate("RememberPassword")  }>
             <Text style={{textAlign: 'center', color: '#919191'}}>Remember Password!</Text>
+          </TouchableOpacity>
+        </View>
+        
+        <View style={{marginTop: 10, }}>
+          <TouchableOpacity onPress={ () => navigation.navigate("Welcome")  }>
+            <Text style={{textAlign: 'center', color: '#919191'}}>App Info</Text>
           </TouchableOpacity>
         </View>
 

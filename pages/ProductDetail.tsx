@@ -6,8 +6,17 @@ import { SingleProduct } from '../models/ProductModel';
 import { singleProduct } from '../api';
 import { SliderBox } from "react-native-image-slider-box";
 import { AntDesign } from '@expo/vector-icons';
+import { useSelector, useDispatch } from 'react-redux'
+import { StateType } from '../useRedux/Store';
+import { ILikeAction } from '../useRedux/LikesReducer';
+import { LikesEnum } from '../useRedux/LikesEnum';
 
 export default function ProductDetail() {
+
+  // Redux Get Data
+  const likesData = useSelector( (obj: StateType) => obj.LikesReducer )
+  // set Data
+  const dispatch = useDispatch()
 
   const [isLike, setIsLike] = useState(false)
   const [proItem, setProItem] = useState<SingleProduct>()
@@ -20,6 +29,10 @@ export default function ProductDetail() {
         const item = itemObj as SingleProduct
         singleProduct(item.id).then(res => {
           setProItem(res.data)
+          const index = likesData.findIndex( (item) => item.id === res.data.id )
+          if (index > -1) {
+            setIsLike(true)
+          }
         })
     } else {
       navigation.goBack()
@@ -29,7 +42,19 @@ export default function ProductDetail() {
   const fncLike = () => {
     const status = !isLike
     setIsLike(status)
-    console.log(status)
+    if (status === true) {
+      const sendObj: ILikeAction = {
+        type: LikesEnum.LIKE_ADD,
+        payload: proItem!
+      }
+      dispatch(sendObj)
+    }else {
+      const sendObj: ILikeAction = {
+        type: LikesEnum.LIKE_REMOVE,
+        payload: proItem!
+      }
+      dispatch(sendObj)
+    }
   }
   
   

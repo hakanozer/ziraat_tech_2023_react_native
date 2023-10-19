@@ -1,11 +1,12 @@
 import { Text, StyleSheet, View, TouchableOpacity, Image, Dimensions } from 'react-native'
 import { SingleProduct } from '../models/ProductModel';
 import { useNavigation } from '@react-navigation/native'
+import { Ionicons } from '@expo/vector-icons';
 
 const deviceWidth = Dimensions.get('window').width
 const imageWidth = 100
 
-export default function ProductItem( prop: {item: SingleProduct}  ) {
+export default function ProductItem( prop: {item: SingleProduct, fncDelete?: any}  ) {
 
   const navigation = useNavigation()
 
@@ -17,6 +18,13 @@ export default function ProductItem( prop: {item: SingleProduct}  ) {
           <Text style={rowStyles.title}>{prop.item.title}</Text>
           <Text style={[rowStyles.title, { textAlign: 'right', fontSize: 16, color: '#7f8280' }]}>{prop.item.category}</Text>
           <Text style={[rowStyles.title, { textAlign: 'right', fontSize: 18, color: '#f2741b' }]}>{prop.item.price}₺</Text>
+          { prop.fncDelete &&
+            <TouchableOpacity onPress={ () => prop.fncDelete(prop.item) }>
+              <View>
+                <Ionicons name="heart-dislike-outline" size={24} color="red" />
+              </View>
+            </TouchableOpacity>
+          }
         </View>
       </View> 
       <View style={rowStyles.viewLine}></View>

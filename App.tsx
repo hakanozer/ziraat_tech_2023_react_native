@@ -6,11 +6,14 @@ import Toast from 'react-native-toast-message';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import { SimpleLineIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
+import {Provider} from 'react-redux'
+import { store } from './useRedux/Store';
 import * as ScreenOrientation from 'expo-screen-orientation';
 
 ScreenOrientation.lockAsync(ScreenOrientation.OrientationLock.PORTRAIT_UP);
 
 // import pages
+import Welcome from './pages/Welcome'
 import Login from './pages/Login'
 import RememberPassword from './pages/RememberPassword'
 import Products from './pages/Products'
@@ -28,6 +31,7 @@ const LoginStack = () =>
 <Stack.Navigator>
   <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
   <Stack.Screen name="RememberPassword" component={RememberPassword} options={{ headerShown: false }} />
+  <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false, presentation: 'modal' }} />
 </Stack.Navigator>
 
 // product stack
@@ -42,6 +46,7 @@ const productsStack = () =>
 const likesStack = () => 
 <Stack.Navigator>
   <Stack.Screen name="Likes" component={Likes} options={{ headerShown: false }} />
+  <Stack.Screen name="ProductDetail" component={ProductDetail} options={{ headerShown: false }} />
 </Stack.Navigator>
 
 
@@ -92,15 +97,18 @@ const AppTabs = () =>
 export default function App() {
   
   return (
-    <NavigationContainer>
-      <View style={{zIndex: 1}}>
-        <Toast />
-      </View>
-      <Stack.Navigator>
-        <Stack.Screen name="LoginStack" component={LoginStack}  options={{ headerShown: false }}  />
-        <Stack.Screen name="AppTabs" component={AppTabs}  options={{ headerShown: false }}  />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <Provider store={store}>
+      <NavigationContainer>
+        <View style={{zIndex: 1}}>
+          <Toast />
+        </View>
+        <Stack.Navigator>
+          <Stack.Screen name="Welcome" component={Welcome}  options={{ headerShown: false }}  />
+          <Stack.Screen name="LoginStack" component={LoginStack}  options={{ headerShown: false }}  />
+          <Stack.Screen name="AppTabs" component={AppTabs}  options={{ headerShown: false }}  />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </Provider>
   );
 
 }
