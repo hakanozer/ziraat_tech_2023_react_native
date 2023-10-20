@@ -1,5 +1,5 @@
 import {useState, useEffect} from 'react'
-import { Text, SafeAreaView, StyleSheet, View, ScrollView, Platform, StatusBar, TouchableOpacity } from 'react-native';
+import { Text, SafeAreaView, StyleSheet, View, ScrollView, Platform, StatusBar, TouchableOpacity, Vibration } from 'react-native';
 import BackBtn from '../components/BackBtn';
 import {useRoute, useNavigation} from '@react-navigation/native'
 import { SingleProduct } from '../models/ProductModel';
@@ -42,6 +42,12 @@ export default function ProductDetail() {
   const fncLike = () => {
     const status = !isLike
     setIsLike(status)
+    if (Platform.OS === 'ios') {
+      //Vibration.cancel()
+      Vibration.vibrate(1000)
+    }else {
+      Vibration.vibrate(500)
+    }
     if (status === true) {
       const sendObj: ILikeAction = {
         type: LikesEnum.LIKE_ADD,

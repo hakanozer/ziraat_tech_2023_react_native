@@ -1,4 +1,4 @@
-import {useState} from 'react'
+import {useState, useEffect} from 'react'
 import { Text, StyleSheet, View, StatusBar, TouchableOpacity } from 'react-native';
 import Swiper from 'react-native-swiper'
 import { AntDesign } from '@expo/vector-icons';
@@ -9,6 +9,27 @@ export default function Welcome() {
 
   const navigation = useNavigation()
   const [index, setIndex] = useState(0)
+  const [status, setStatus] = useState(false)
+
+
+  useEffect(() => {
+
+      var timer:any = null
+      timer = setTimeout(() => {
+        if (status === true) {
+          clearTimeout(timer)
+        }else {
+          //navigation.replace('LoginStack')
+        }
+      }, 5000 )
+
+    /*
+    setInterval(() => {
+        console.log('1 sec.');
+    }, 1000);
+    */
+
+  }, [status])
   
   return (
     <>
@@ -19,7 +40,7 @@ export default function Welcome() {
       <Swiper 
         style={styles.swipeContainer}
         showsButtons={true}
-        onIndexChanged={(index) => setIndex(index)}
+        onIndexChanged={(index) => {setIndex(index), setStatus(true)}}
         //onIndexChanged={(index) =>  console.log(index)  }
         loadMinimal={true}
         loadMinimalSize={3}
